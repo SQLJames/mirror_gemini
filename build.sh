@@ -1,0 +1,1 @@
+docker build . -t gemini_exchange_exporter
