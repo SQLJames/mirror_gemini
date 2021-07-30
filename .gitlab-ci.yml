@@ -1,5 +1,9 @@
+stages:
+  - build
 variables:
-    GEMINI_EXPORTER_REPO: git@github.com:SQLJames/gemini_exchange_exporter.git
+  GEMINI_EXPORTER_REPO: git@github.com:SQLJames/gemini_exchange_exporter.git
 
 before_script:
-  - docker info
+  stage: build
+  script:
+    - docker info
