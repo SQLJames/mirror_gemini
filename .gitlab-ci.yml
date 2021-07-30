@@ -1,7 +1,5 @@
 stages:
   - build
-variables:
-  GEMINI_EXPORTER_REPO: git@github.com:SQLJames/gemini_exchange_exporter.git
 
 docker_debug:
   stage: build
