@@ -28,6 +28,7 @@ variables:
     --label com.gitlab.ci.commiturl=$CI_PROJECT_URL/commit/$CI_COMMIT_SHA
     --label com.gitlab.ci.cijoburl=$CI_JOB_URL
     --label com.gitlab.ci.mrurl=$CI_PROJECT_URL/-/merge_requests/$CI_MERGE_REQUEST_ID
+  NEXUX_DOCKER_REPO: https://nexus.rhoat-homelab.com/repository/docker/
 
 get-latest-git-version:
   stage: .pre
@@ -87,6 +88,9 @@ get-latest-git-version:
       echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
       /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile $KANIKO_CACHE_ARGS $FORMATTEDTAGLIST $IMAGE_LABELS
 
+      echo "uploading to docker repository"
+      echo "{\"auths\":{\"$NEXUX_DOCKER_REPO\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+      /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile $KANIKO_CACHE_ARGS $FORMATTEDTAGLIST $IMAGE_LABELS
 
 build-for-gitlab-project-registry:
   extends: .build_with_kaniko
